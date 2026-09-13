@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckRouteImport } from './routes/check'
 import { Route as EmergencyRouteImport } from './routes/emergency'
 import { Route as PetsRouteImport } from './routes/pets'
+import { Route as JournalIndexRouteImport } from './routes/journal.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const PetsRoute = PetsRouteImport.update({
   path: '/pets',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalIndexRoute = JournalIndexRouteImport.update({
+  id: '/journal/',
+  path: '/journal/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
   '/pets': typeof PetsRoute
+  '/journal/': typeof JournalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
   '/pets': typeof PetsRoute
+  '/journal': typeof JournalIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
   '/pets': typeof PetsRoute
+  '/journal/': typeof JournalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/check' | '/emergency' | '/pets'
+  fullPaths: '/' | '/check' | '/emergency' | '/pets' | '/journal/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/check' | '/emergency' | '/pets'
-  id: '__root__' | '/' | '/check' | '/emergency' | '/pets'
+  to: '/' | '/check' | '/emergency' | '/pets' | '/journal'
+  id: '__root__' | '/' | '/check' | '/emergency' | '/pets' | '/journal/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +76,7 @@ export interface RootRouteChildren {
   CheckRoute: typeof CheckRoute
   EmergencyRoute: typeof EmergencyRoute
   PetsRoute: typeof PetsRoute
+  JournalIndexRoute: typeof JournalIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PetsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal/': {
+      id: '/journal/'
+      path: '/journal'
+      fullPath: '/journal/'
+      preLoaderRoute: typeof JournalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckRoute: CheckRoute,
   EmergencyRoute: EmergencyRoute,
   PetsRoute: PetsRoute,
+  JournalIndexRoute: JournalIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
