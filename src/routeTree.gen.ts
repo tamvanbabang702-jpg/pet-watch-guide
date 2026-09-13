@@ -10,11 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CheckRouteImport } from './routes/check'
 import { Route as EmergencyRouteImport } from './routes/emergency'
+import { Route as PetsRouteImport } from './routes/pets'
+import { Route as JournalIndexRouteImport } from './routes/journal.index'
+import { Route as JournalEntryIdRouteImport } from './routes/journal.$entryId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckRoute = CheckRouteImport.update({
+  id: '/check',
+  path: '/check',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmergencyRoute = EmergencyRouteImport.update({
@@ -22,31 +31,70 @@ const EmergencyRoute = EmergencyRouteImport.update({
   path: '/emergency',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PetsRoute = PetsRouteImport.update({
+  id: '/pets',
+  path: '/pets',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalIndexRoute = JournalIndexRouteImport.update({
+  id: '/journal/',
+  path: '/journal/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalEntryIdRoute = JournalEntryIdRouteImport.update({
+  id: '/journal/$entryId',
+  path: '/journal/$entryId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
+  '/pets': typeof PetsRoute
+  '/journal/$entryId': typeof JournalEntryIdRoute
+  '/journal/': typeof JournalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
+  '/pets': typeof PetsRoute
+  '/journal/$entryId': typeof JournalEntryIdRoute
+  '/journal': typeof JournalIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
+  '/pets': typeof PetsRoute
+  '/journal/$entryId': typeof JournalEntryIdRoute
+  '/journal/': typeof JournalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/emergency'
+  fullPaths:
+    '/' | '/check' | '/emergency' | '/pets' | '/journal/$entryId' | '/journal/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/emergency'
-  id: '__root__' | '/' | '/emergency'
+  to: '/' | '/check' | '/emergency' | '/pets' | '/journal/$entryId' | '/journal'
+  id:
+    | '__root__'
+    | '/'
+    | '/check'
+    | '/emergency'
+    | '/pets'
+    | '/journal/$entryId'
+    | '/journal/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CheckRoute: typeof CheckRoute
   EmergencyRoute: typeof EmergencyRoute
+  PetsRoute: typeof PetsRoute
+  JournalEntryIdRoute: typeof JournalEntryIdRoute
+  JournalIndexRoute: typeof JournalIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +106,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/check': {
+      id: '/check'
+      path: '/check'
+      fullPath: '/check'
+      preLoaderRoute: typeof CheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/emergency': {
       id: '/emergency'
       path: '/emergency'
@@ -65,12 +120,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmergencyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pets': {
+      id: '/pets'
+      path: '/pets'
+      fullPath: '/pets'
+      preLoaderRoute: typeof PetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal/': {
+      id: '/journal/'
+      path: '/journal'
+      fullPath: '/journal/'
+      preLoaderRoute: typeof JournalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal/$entryId': {
+      id: '/journal/$entryId'
+      path: '/journal/$entryId'
+      fullPath: '/journal/$entryId'
+      preLoaderRoute: typeof JournalEntryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CheckRoute: CheckRoute,
   EmergencyRoute: EmergencyRoute,
+  PetsRoute: PetsRoute,
+  JournalEntryIdRoute: JournalEntryIdRoute,
+  JournalIndexRoute: JournalIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

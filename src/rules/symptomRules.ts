@@ -861,3 +861,65 @@ export const symptomRules: SymptomRule[] = [
 ];
 
 export const symptomById = (id: string) => symptomRules.find((s) => s.id === id);
+
+/**
+ * General context is asked in step 4 of every check. It is modelled as a
+ * hidden symptom rule so the engine can score it like any other answers.
+ */
+export const GENERAL_CONTEXT_ID = "general";
+
+export const generalContextRule: SymptomRule = {
+  id: GENERAL_CONTEXT_ID,
+  label: "General context",
+  icon: "🧭",
+  blurb: "How your pet seems overall",
+  monitor: ["Overall energy, appetite and drinking", "Whether things improve or worsen over the next day"],
+  seekCareIf: ["Your pet becomes much quieter, weaker or stops eating and drinking"],
+  questions: [
+    {
+      id: "general.behaviour",
+      text: "How is your pet behaving overall?",
+      type: "single",
+      options: behaviourOptions,
+    },
+    {
+      id: "general.eating",
+      text: "How is eating and drinking today?",
+      type: "single",
+      options: [
+        { id: "normal", label: "Normal", weight: 0 },
+        { id: "reduced", label: "A little reduced", weight: 1 },
+        {
+          id: "none",
+          label: "Not eating or drinking at all",
+          weight: 3,
+          reason: "Your pet is not eating or drinking.",
+        },
+      ],
+    },
+    {
+      id: "general.duration",
+      text: "How long have you noticed something different?",
+      type: "single",
+      options: durationOptions,
+    },
+    {
+      id: "general.risk",
+      text: "Does any of this apply?",
+      type: "multi",
+      options: [
+        { id: "very-young", label: "Very young (under 6 months)", weight: 2, reason: "Very young animals can become unwell quickly." },
+        { id: "senior", label: "Senior pet", weight: 2, reason: "Older pets can deteriorate faster." },
+        { id: "pregnant", label: "Pregnant or recently gave birth", weight: 2, reason: "Pregnancy or recent birth needs extra caution." },
+        { id: "chronic", label: "Has a long-term health condition", weight: 2, reason: "An existing long-term condition needs extra caution." },
+        { id: "medication", label: "Currently on medication", weight: 1 },
+        NONE("general.risk.none"),
+      ],
+    },
+  ],
+};
+
+symptomRules.push(generalContextRule);
+
+/** Symptoms shown to the owner in the picker (general context is asked separately). */
+export const selectableSymptoms = symptomRules.filter((s) => s.id !== GENERAL_CONTEXT_ID);
