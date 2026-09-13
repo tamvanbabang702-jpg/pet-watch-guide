@@ -14,6 +14,7 @@ import { Route as CheckRouteImport } from './routes/check'
 import { Route as EmergencyRouteImport } from './routes/emergency'
 import { Route as PetsRouteImport } from './routes/pets'
 import { Route as JournalIndexRouteImport } from './routes/journal.index'
+import { Route as JournalEntryIdRouteImport } from './routes/journal.$entryId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,12 +41,18 @@ const JournalIndexRoute = JournalIndexRouteImport.update({
   path: '/journal/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalEntryIdRoute = JournalEntryIdRouteImport.update({
+  id: '/journal/$entryId',
+  path: '/journal/$entryId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
   '/pets': typeof PetsRoute
+  '/journal/$entryId': typeof JournalEntryIdRoute
   '/journal/': typeof JournalIndexRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
   '/pets': typeof PetsRoute
+  '/journal/$entryId': typeof JournalEntryIdRoute
   '/journal': typeof JournalIndexRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,23 @@ export interface FileRoutesById {
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
   '/pets': typeof PetsRoute
+  '/journal/$entryId': typeof JournalEntryIdRoute
   '/journal/': typeof JournalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/check' | '/emergency' | '/pets' | '/journal/'
+  fullPaths:
+    '/' | '/check' | '/emergency' | '/pets' | '/journal/$entryId' | '/journal/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/check' | '/emergency' | '/pets' | '/journal'
-  id: '__root__' | '/' | '/check' | '/emergency' | '/pets' | '/journal/'
+  to: '/' | '/check' | '/emergency' | '/pets' | '/journal/$entryId' | '/journal'
+  id:
+    | '__root__'
+    | '/'
+    | '/check'
+    | '/emergency'
+    | '/pets'
+    | '/journal/$entryId'
+    | '/journal/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +93,7 @@ export interface RootRouteChildren {
   CheckRoute: typeof CheckRoute
   EmergencyRoute: typeof EmergencyRoute
   PetsRoute: typeof PetsRoute
+  JournalEntryIdRoute: typeof JournalEntryIdRoute
   JournalIndexRoute: typeof JournalIndexRoute
 }
 
@@ -116,6 +134,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal/$entryId': {
+      id: '/journal/$entryId'
+      path: '/journal/$entryId'
+      fullPath: '/journal/$entryId'
+      preLoaderRoute: typeof JournalEntryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -124,6 +149,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckRoute: CheckRoute,
   EmergencyRoute: EmergencyRoute,
   PetsRoute: PetsRoute,
+  JournalEntryIdRoute: JournalEntryIdRoute,
   JournalIndexRoute: JournalIndexRoute,
 }
 export const routeTree = rootRouteImport
