@@ -20,13 +20,13 @@ export function PetForm({
 }) {
   const [name, setName] = useState(initial?.name ?? "");
   const [species, setSpecies] = useState<Species>(initial?.species ?? "dog");
-  const [sex, setSex] = useState(initial?.sex ?? "unknown");
+  const [sex, setSex] = useState<string>(initial?.sex ?? "unknown");
   const [ageYears, setAgeYears] = useState(initial?.ageYears?.toString() ?? "");
   const [weightKg, setWeightKg] = useState(initial?.weightKg?.toString() ?? "");
   const [breed, setBreed] = useState(initial?.breed ?? "");
-  const [indoor, setIndoor] = useState(initial?.indoor ?? "unknown");
-  const [neutered, setNeutered] = useState(initial?.neutered ?? "unknown");
-  const [vaccination, setVaccination] = useState(initial?.vaccination ?? "unknown");
+  const [indoor, setIndoor] = useState<string>(initial?.indoor ?? "unknown");
+  const [neutered, setNeutered] = useState<string>(initial?.neutered ?? "unknown");
+  const [vaccination, setVaccination] = useState<string>(initial?.vaccination ?? "unknown");
   const [allergies, setAllergies] = useState(initial?.allergies ?? "");
   const [notes, setNotes] = useState(initial?.notes ?? "");
   const [error, setError] = useState("");
@@ -37,20 +37,21 @@ export function PetForm({
       setError("Please add a name so you can tell your pets apart.");
       return;
     }
-    onSubmit({
+    const draft: PetDraft = {
       name: name.trim(),
       species,
-      sex: sex as Pet["sex"],
-      ageYears: ageYears ? Number(ageYears) : undefined,
-      weightKg: weightKg ? Number(weightKg) : undefined,
-      breed: breed.trim() || undefined,
-      indoor: indoor as Pet["indoor"],
-      neutered: neutered as Pet["neutered"],
-      vaccination: vaccination as Pet["vaccination"],
-      allergies: allergies.trim() || undefined,
-      notes: notes.trim() || undefined,
-      baseline: initial?.baseline,
-    });
+      sex: sex as NonNullable<Pet["sex"]>,
+      indoor: indoor as NonNullable<Pet["indoor"]>,
+      neutered: neutered as NonNullable<Pet["neutered"]>,
+      vaccination: vaccination as NonNullable<Pet["vaccination"]>,
+    };
+    if (ageYears) draft.ageYears = Number(ageYears);
+    if (weightKg) draft.weightKg = Number(weightKg);
+    if (breed.trim()) draft.breed = breed.trim();
+    if (allergies.trim()) draft.allergies = allergies.trim();
+    if (notes.trim()) draft.notes = notes.trim();
+    if (initial?.baseline) draft.baseline = initial.baseline;
+    onSubmit(draft);
   }
 
   return (

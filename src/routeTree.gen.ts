@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckRouteImport } from './routes/check'
 import { Route as EmergencyRouteImport } from './routes/emergency'
+import { Route as GuideRouteImport } from './routes/guide'
 import { Route as PetsRouteImport } from './routes/pets'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as JournalIndexRouteImport } from './routes/journal.index'
 import { Route as JournalEntryIdRouteImport } from './routes/journal.$entryId'
 
@@ -31,9 +33,19 @@ const EmergencyRoute = EmergencyRouteImport.update({
   path: '/emergency',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuideRoute = GuideRouteImport.update({
+  id: '/guide',
+  path: '/guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PetsRoute = PetsRouteImport.update({
   id: '/pets',
   path: '/pets',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JournalIndexRoute = JournalIndexRouteImport.update({
@@ -51,7 +63,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
+  '/guide': typeof GuideRoute
   '/pets': typeof PetsRoute
+  '/settings': typeof SettingsRoute
   '/journal/$entryId': typeof JournalEntryIdRoute
   '/journal/': typeof JournalIndexRoute
 }
@@ -59,7 +73,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
+  '/guide': typeof GuideRoute
   '/pets': typeof PetsRoute
+  '/settings': typeof SettingsRoute
   '/journal/$entryId': typeof JournalEntryIdRoute
   '/journal': typeof JournalIndexRoute
 }
@@ -68,22 +84,41 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/check': typeof CheckRoute
   '/emergency': typeof EmergencyRoute
+  '/guide': typeof GuideRoute
   '/pets': typeof PetsRoute
+  '/settings': typeof SettingsRoute
   '/journal/$entryId': typeof JournalEntryIdRoute
   '/journal/': typeof JournalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/check' | '/emergency' | '/pets' | '/journal/$entryId' | '/journal/'
+    | '/'
+    | '/check'
+    | '/emergency'
+    | '/guide'
+    | '/pets'
+    | '/settings'
+    | '/journal/$entryId'
+    | '/journal/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/check' | '/emergency' | '/pets' | '/journal/$entryId' | '/journal'
+  to:
+    | '/'
+    | '/check'
+    | '/emergency'
+    | '/guide'
+    | '/pets'
+    | '/settings'
+    | '/journal/$entryId'
+    | '/journal'
   id:
     | '__root__'
     | '/'
     | '/check'
     | '/emergency'
+    | '/guide'
     | '/pets'
+    | '/settings'
     | '/journal/$entryId'
     | '/journal/'
   fileRoutesById: FileRoutesById
@@ -92,7 +127,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CheckRoute: typeof CheckRoute
   EmergencyRoute: typeof EmergencyRoute
+  GuideRoute: typeof GuideRoute
   PetsRoute: typeof PetsRoute
+  SettingsRoute: typeof SettingsRoute
   JournalEntryIdRoute: typeof JournalEntryIdRoute
   JournalIndexRoute: typeof JournalIndexRoute
 }
@@ -120,11 +157,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmergencyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guide': {
+      id: '/guide'
+      path: '/guide'
+      fullPath: '/guide'
+      preLoaderRoute: typeof GuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pets': {
       id: '/pets'
       path: '/pets'
       fullPath: '/pets'
       preLoaderRoute: typeof PetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/journal/': {
@@ -148,7 +199,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CheckRoute: CheckRoute,
   EmergencyRoute: EmergencyRoute,
+  GuideRoute: GuideRoute,
   PetsRoute: PetsRoute,
+  SettingsRoute: SettingsRoute,
   JournalEntryIdRoute: JournalEntryIdRoute,
   JournalIndexRoute: JournalIndexRoute,
 }
