@@ -10,12 +10,16 @@ lives in `localStorage` on the device, so it packages cleanly as a native Androi
 
 ## One-time setup
 
+The `./android` Gradle project is already generated and committed, so you only need:
+
 ```sh
 npm install
-npm run build          # produces the static client bundle
-npx cap add android    # creates the ./android Gradle project
+npm run build          # produces the static client bundle in dist/client
 npx cap sync android
 ```
+
+If `./android` is ever missing, recreate it with `npx cap add android` (run
+`npm run build` first — Capacitor requires `dist/client/index.html` to exist).
 
 ## Open in Android Studio
 

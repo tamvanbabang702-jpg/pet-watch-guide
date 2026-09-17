@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Healthy Pet Checker</string>
+    <string name="title_activity_main">Healthy Pet Checker</string>
+    <string name="package_name">app.lovable.healthypetchecker</string>
+    <string name="custom_url_scheme">app.lovable.healthypetchecker</string>
+</resources>
