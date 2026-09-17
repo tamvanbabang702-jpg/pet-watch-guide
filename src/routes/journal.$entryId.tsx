@@ -182,8 +182,8 @@ function Section({ title, items }: { title: string; items: string[] }) {
     <Card className="space-y-2">
       <h3 className="font-semibold">{title}</h3>
       <ul className="space-y-1.5">
-        {items.map((i) => (
-          <li key={i} className="flex gap-2 text-sm leading-relaxed text-muted-foreground">
+        {items.map((i, idx) => (
+          <li key={`${idx}-${i}`} className="flex gap-2 text-sm leading-relaxed text-muted-foreground">
             <span aria-hidden className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
             <span>{i}</span>
           </li>
